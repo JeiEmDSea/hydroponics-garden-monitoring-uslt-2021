@@ -1,0 +1,84 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Arduino",
+      "type": "arduino",
+      "request": "launch",
+      "program": "${file}",
+      "cwd": "${workspaceFolder}/arduino/src",
+      "MIMode": "gdb",
+      "targetArchitecture": "arm",
+      "miDebuggerPath": "",
+      "debugServerPath": "",
+      "debugServerArgs": "",
+      "customLaunchSetupCommands": [
+        {
+          "text": "target remote localhost:3333"
+        },
+        {
+          "text": "file \"${file}\""
+        },
+        {
+          "text": "load"
+        },
+        {
+          "text": "monitor reset halt"
+        },
+        {
+          "text": "monitor reset init"
+        }
+      ],
+      "stopAtEntry": true,
+      "serverStarted": "Info\\ :\\ [\\w\\d\\.]*:\\ hardware",
+      "launchCompleteCommand": "exec-continue",
+      "filterStderr": true,
+      "args": []
+    },
+    {
+      "name": "Flutter",
+      "type": "dart",
+      "request": "launch",
+      "program": "mobile-app/garden_monitor/lib/main.dart"
+    },
+    {
+      // Use IntelliSense to find out which attributes exist for C# debugging
+      // Use hover for the description of the existing attributes
+      // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
+      "name": ".NET Core Launch (web)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      // If you have changed target frameworks, make sure to update the program path.
+      "program": "${workspaceFolder}/api/GardenMonitorAPI/GardenMonitorAPI/bin/Debug/net5.0/GardenMonitorAPI.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/api/GardenMonitorAPI/GardenMonitorAPI",
+      "stopAtEntry": false,
+      // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "sourceFileMap": {
+        "/Views": "${workspaceFolder}/Views"
+      }
+    },
+    {
+      "name": ".NET Core Attach",
+      "type": "coreclr",
+      "request": "attach"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Debug all",
+      "configurations": [
+        ".NET Core Launch (web)",
+        "Flutter"
+      ]
+    }
+  ]
+}
