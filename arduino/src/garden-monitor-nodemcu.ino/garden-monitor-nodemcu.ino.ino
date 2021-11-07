@@ -1,7 +1,8 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
+#include <ArduinoJson.h>
 
-#define BASE_URL "http://85bc-58-69-124-94.ngrok.io"
+#define BASE_URL "http://cb14-58-69-124-94.ngrok.io"
 
 #ifndef STASSID
 #define STASSID "TP-Link_1EFA"
@@ -10,7 +11,7 @@
 
 void setup()
 {
-  Serial.begin(115200);
+  Serial.begin(9600);
   WiFi.begin(STASSID, STAPSK);
 
   while (WiFi.status() != WL_CONNECTED)
@@ -23,13 +24,23 @@ void loop()
 {
   if ((WiFi.status() == WL_CONNECTED))
   {
-    saveSensorData();
+    parseData();
   }
-
-  delay(10000);
 }
 
-void saveSensorData()
+void parseData()
+{
+  if (Serial.available())
+  {
+    StaticJsonDocument<500> sensorData;
+    DeserializationError err = deserializeJson(sensorData, Serial);
+
+    if (err == DeserializationError::Ok)
+      saveReading(sensorData.as<String>());
+  }
+}
+
+void saveReading(String data)
 {
   WiFiClient client;
   HTTPClient http;
@@ -37,13 +48,19 @@ void saveSensorData()
   http.begin(client, BASE_URL "/garden");
   http.addHeader("Content-Type", "application/json");
 
-  int statusCode = http.POST("{\"humidity\":56,\"temperature\":35}");
+  int statusCode = http.POST(data);
 
   if (statusCode > 0)
   {
     if (statusCode == HTTP_CODE_OK)
     {
-      const String &payload = http.getString();
+      const String payload = http.getString();
+      char cpayload[payload.length()];
+      payload.toCharArray(cpayload, payload.length());
+
+      DynamicJsonDocument settings(1024);
+      deserializeJson(settings, cpayload);
+      Serial.println(settings.as<String>());
     }
   }
   else
