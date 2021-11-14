@@ -1,9 +1,9 @@
-﻿using System;
-using GardenMonitorAPI.Data.Entities;
-using GardenMonitorAPI.WebModels;
-
-namespace GardenMonitorAPI.Extensions.WebModels
+﻿namespace GardenMonitorAPI.Extensions.WebModels
 {
+    using System;
+    using GardenMonitorAPI.Data.Entities;
+    using GardenMonitorAPI.WebModels;
+
     public static class ReadingWebModelExtensions
     {
         public static ReadingEntity AsEntity(this ReadingWebModel model)

@@ -1,28 +1,10 @@
-﻿namespace GardenMonitorAPI.Data.Entities
+﻿namespace GardenMonitorAPI.WebModels
 {
     using System;
     using Newtonsoft.Json;
 
-    public class SettingsEntity
+    public class SettingsWebModel
     {
-        public SettingsEntity()
-        {
-        }
-
-        public SettingsEntity(string gardenId)
-        {
-            this.Id = Guid.NewGuid();
-            this.GardenId = gardenId;
-            this.MaxSoilMoisture = 100;
-            this.MinSoilMoisture = 0;
-            this.MaxWaterLevel = 100;
-            this.MinWaterLevel = 0;
-            this.MaxHumidity = 100;
-            this.MinHumidity = 0;
-            this.MaxTemperature = 50;
-            this.MinTemperature = 25;
-        }
-
         [JsonProperty("id")]
         public Guid Id { get; set; }
 

@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-
-namespace GardenMonitorAPI.WebModels
+﻿namespace GardenMonitorAPI.WebModels
 {
+    using Newtonsoft.Json;
+
     public class ReadingWebModel
     {
         [JsonProperty("gardenId")]

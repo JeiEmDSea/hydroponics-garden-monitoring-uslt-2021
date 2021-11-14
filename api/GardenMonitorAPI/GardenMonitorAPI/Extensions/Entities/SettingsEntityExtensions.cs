@@ -1,8 +1,8 @@
-﻿using GardenMonitorAPI.Data.Entities;
-using GardenMonitorAPI.Messages.Responses;
-
-namespace GardenMonitorAPI.Extensions.Entities
+﻿namespace GardenMonitorAPI.Extensions.Entities
 {
+    using GardenMonitorAPI.Data.Entities;
+    using GardenMonitorAPI.Messages.Responses;
+
     public static class SettingsEntityExtensions
     {
         public static SettingsResponseModel AsResponse(this SettingsEntity settings)
@@ -14,7 +14,7 @@ namespace GardenMonitorAPI.Extensions.Entities
                 MaxWaterLevel = settings.MaxWaterLevel,
                 MinWaterLevel = settings.MinWaterLevel,
                 MaxHumidity = settings.MaxHumidity,
-                MinHumidity= settings.MinHumidity,
+                MinHumidity = settings.MinHumidity,
                 MaxTemperature = settings.MaxTemperature,
                 MinTemperature = settings.MinTemperature
             };

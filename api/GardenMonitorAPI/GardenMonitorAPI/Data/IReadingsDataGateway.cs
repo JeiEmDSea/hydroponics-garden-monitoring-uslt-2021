@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using GardenMonitorAPI.Data.Entities;
-
-namespace GardenMonitorAPI.Data
+﻿namespace GardenMonitorAPI.Data
 {
+    using System.Threading.Tasks;
+    using GardenMonitorAPI.Data.Entities;
+
     public interface IReadingsDataGateway
     {
         Task<SettingsEntity> InsertReading(ReadingEntity reading);

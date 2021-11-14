@@ -1,8 +1,8 @@
-﻿using System;
-using Newtonsoft.Json;
-
-namespace GardenMonitorAPI.Data.Entities
+﻿namespace GardenMonitorAPI.Data.Entities
 {
+    using System;
+    using Newtonsoft.Json;
+
     public class ReadingEntity
     {
         [JsonProperty("id")]

@@ -1,15 +1,15 @@
-﻿using System.Threading.Tasks;
-using GardenMonitorAPI.Data;
-using GardenMonitorAPI.Data.Factories;
-using GardenMonitorAPI.Extensions.Entities;
-using GardenMonitorAPI.Extensions.WebModels;
-using GardenMonitorAPI.WebModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-
-namespace GardenMonitorAPI.Controllers
+﻿namespace GardenMonitorAPI.Controllers
 {
+    using System.Threading.Tasks;
+    using GardenMonitorAPI.Data;
+    using GardenMonitorAPI.Data.Factories;
+    using GardenMonitorAPI.Extensions.Entities;
+    using GardenMonitorAPI.Extensions.WebModels;
+    using GardenMonitorAPI.WebModels;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+    using Newtonsoft.Json;
+
     [ApiController]
     [Route("garden")]
     public class GardenController : ControllerBase
@@ -23,7 +23,7 @@ namespace GardenMonitorAPI.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> SaveSensorDataAsync([FromBody] ReadingWebModel model)
+        public async Task<IActionResult> SaveSensorData([FromBody] ReadingWebModel model)
         {
             var response = (await this.dataGateway.InsertReading(model.AsEntity())).AsResponse();
 
@@ -38,5 +38,15 @@ namespace GardenMonitorAPI.Controllers
 
             return this.Ok();
         }
+
+        [HttpPost("settings")]
+        [AllowAnonymous]
+        public async Task<IActionResult> SaveSettings([FromBody] SettingsWebModel model)
+        {
+            await this.dataGateway.UpsertSettings(model.AsEntity());
+
+            return this.Ok();
+        }
     }
 }
+

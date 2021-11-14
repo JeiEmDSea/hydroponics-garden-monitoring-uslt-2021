@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-
-namespace GardenMonitorAPI.Messages.Responses
+﻿namespace GardenMonitorAPI.Messages.Responses
 {
+    using Newtonsoft.Json;
+
     public class SettingsResponseModel
     {
         [JsonProperty("a")]

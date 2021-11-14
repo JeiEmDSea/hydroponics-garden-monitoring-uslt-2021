@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GardenMonitorAPI.Data.Entities;
-using GardenMonitorAPI.Data.Factories;
-using GardenMonitorAPI.Enums;
-using GardenMonitorAPI.Utitilities;
-using Microsoft.Azure.Cosmos;
-
-namespace GardenMonitorAPI.Data
+﻿namespace GardenMonitorAPI.Data
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using GardenMonitorAPI.Data.Entities;
+    using GardenMonitorAPI.Data.Factories;
+    using GardenMonitorAPI.Enums;
+    using GardenMonitorAPI.Utitilities;
+    using Microsoft.Azure.Cosmos;
+
     public class ReadingsDataGateway : IReadingsDataGateway
     {
         private readonly ICosmosDbClientFactory clientFactory;
@@ -75,19 +74,7 @@ namespace GardenMonitorAPI.Data
                 return settings.First();
             }
 
-            SettingsEntity defaultSettings = new()
-            {
-                Id = Guid.NewGuid(),
-                GardenId = gardenId,
-                MaxSoilMoisture = 100,
-                MinSoilMoisture = 0,
-                MaxWaterLevel = 100,
-                MinWaterLevel = 0,
-                MaxHumidity = 100,
-                MinHumidity = 0,
-                MaxTemperature = 50,
-                MinTemperature = 25
-            };
+            SettingsEntity defaultSettings = new(gardenId);
 
             await this.UpsertSettings(defaultSettings);
 
