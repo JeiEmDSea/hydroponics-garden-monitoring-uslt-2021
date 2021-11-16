@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:garden_monitor/constants.dart';
 
 class LineReportChart extends StatelessWidget {
-  const LineReportChart({Key? key}) : super(key: key);
+  final List<double> readingValues;
+
+  const LineReportChart({
+    Key? key,
+    required this.readingValues,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,19 +35,14 @@ class LineReportChart extends StatelessWidget {
   }
 
   List<FlSpot> getSpots() {
-    return [
-      const FlSpot(0, .5),
-      const FlSpot(1, 1.5),
-      const FlSpot(2, .5),
-      const FlSpot(3, .7),
-      const FlSpot(4, .2),
-      const FlSpot(5, 2),
-      const FlSpot(6, 1.5),
-      const FlSpot(7, 1.7),
-      const FlSpot(8, 1),
-      const FlSpot(9, 2.8),
-      const FlSpot(10, 2.5),
-      const FlSpot(11, 2.65),
-    ];
+    List<FlSpot> result = [];
+
+    if (readingValues.isNotEmpty) {
+      readingValues.asMap().forEach((index, val) {
+        result.add(FlSpot(index.toDouble(), val));
+      });
+    }
+
+    return result;
   }
 }

@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:garden_monitor/constants.dart';
 import 'package:garden_monitor/widgets/line_chart.dart';
 
 class InfoCard extends StatelessWidget {
   final String title;
-  final int value;
+  final double value;
   final String unit;
-  final String iconPath;
+  final IconData icon;
   final Color iconColor;
+  final List<double> readingValues;
 
   const InfoCard({
     Key? key,
     required this.title,
     required this.value,
     required this.unit,
-    required this.iconPath,
+    required this.icon,
     required this.iconColor,
+    required this.readingValues,
   }) : super(key: key);
 
   @override
@@ -50,10 +51,8 @@ class InfoCard extends StatelessWidget {
                         color: iconColor.withOpacity(0.5),
                         shape: BoxShape.circle,
                       ),
-                      child: SvgPicture.asset(
-                        iconPath,
-                        height: 18,
-                        width: 18,
+                      child: Icon(
+                        icon,
                         color: iconColor,
                       ),
                     ),
@@ -98,8 +97,10 @@ class InfoCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Expanded(
-                      child: LineReportChart(),
+                    Expanded(
+                      child: LineReportChart(
+                        readingValues: readingValues,
+                      ),
                     )
                   ],
                 ),
