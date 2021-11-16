@@ -25,5 +25,11 @@
 
         [JsonProperty("temperature")]
         public float Temperature { get; set; }
+
+        [JsonProperty("phLevel")]
+        public float PhLevel { get; set; }
+
+        [JsonProperty("tds")]
+        public float Tds { get; set; }
     }
 }

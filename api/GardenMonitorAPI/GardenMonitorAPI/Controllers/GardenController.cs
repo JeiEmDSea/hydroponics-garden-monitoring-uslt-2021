@@ -30,6 +30,16 @@
             return this.Ok(JsonConvert.SerializeObject(response));
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetReadings([FromQuery] string gardenId)
+        {
+            var response = (await this.dataGateway.GetReadings(gardenId)).AsResponse();
+
+            return this.Ok(JsonConvert.SerializeObject(response));
+        }
+
+
         [HttpDelete]
         [AllowAnonymous]
         public async Task<IActionResult> ClearReadings([FromQuery] string gardenId)

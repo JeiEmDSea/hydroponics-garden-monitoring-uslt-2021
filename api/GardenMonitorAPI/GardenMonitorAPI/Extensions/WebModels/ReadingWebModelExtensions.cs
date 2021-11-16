@@ -16,7 +16,9 @@
                 SoilMoisture = model.SoilMoisture,
                 WaterLevel = model.WaterLevel,
                 Humidity = model.Humidity,
-                Temperature = model.Temperature
+                Temperature = model.Temperature,
+                PhLevel = model.PhLevel,
+                Tds = model.Tds
             };
         }
     }

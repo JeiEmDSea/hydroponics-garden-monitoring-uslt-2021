@@ -45,6 +45,33 @@
             readings.ForEach(r => client.GetContainer(DatabaseMap.Id, DatabaseMap.Map[EntityType.Reading]).DeleteItemAsync<ReadingEntity>(r.Id.ToString(), new PartitionKey(gardenId)));
         }
 
+        public async Task<IEnumerable<ReadingEntity>> GetReadings(string gardenId)
+        {
+            var client = this.clientFactory.GetOrCreateInstance();
+
+            QueryDefinition query = new QueryDefinition(
+                "select TOP 12 * from readings r where r.gardenId = @gardenId order by r.timeStamp asc")
+                .WithParameter("@gardenId", gardenId);
+
+            List<ReadingEntity> readings = new();
+            using FeedIterator<ReadingEntity> resultSet = client.GetContainer(DatabaseMap.Id, DatabaseMap.Map[EntityType.Reading]).GetItemQueryIterator<ReadingEntity>(
+                query,
+                requestOptions: new QueryRequestOptions()
+                {
+                    PartitionKey = new PartitionKey(gardenId),
+                    MaxItemCount = -1
+                });
+
+            while (resultSet.HasMoreResults)
+            {
+                FeedResponse<ReadingEntity> response = await resultSet.ReadNextAsync();
+                if (response.Diagnostics != null)
+                    readings.AddRange(response);
+            }
+
+            return readings;
+        }
+
         public async Task<SettingsEntity> GetSettings(string gardenId)
         {
             var client = this.clientFactory.GetOrCreateInstance();
