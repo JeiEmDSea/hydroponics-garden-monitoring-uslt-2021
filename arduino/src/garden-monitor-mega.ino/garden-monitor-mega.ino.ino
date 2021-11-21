@@ -10,12 +10,12 @@ SoftwareSerial NodeMCU(3, 4);
 
 // ! SOIL MOISTURE SENSOR
 #define soilMoistureSensorPin A0
-#define soilMoistureSensorPower 52
+#define soilMoistureSensorPower 53
 int soilMoisture;
 
 // ! WATER LEVEL SENSOR
 #define waterLevelSensorPin A1
-#define waterLevelSensorPower 53
+#define waterLevelSensorPower 52
 int waterLevel;
 
 // ! AM2302 (DHT22)
