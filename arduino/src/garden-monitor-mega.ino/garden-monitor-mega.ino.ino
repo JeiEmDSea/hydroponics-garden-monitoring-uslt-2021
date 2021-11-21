@@ -1,6 +1,9 @@
 #include "DHT.h"
 #include <SoftwareSerial.h>
 #include <ArduinoJson.h>
+#include <EEPROM.h>
+#include "GravityTDS.h"
+#include <Relay.h>
 
 #define calibration false
 SoftwareSerial NodeMCU(3, 4);
@@ -17,7 +20,6 @@ int waterLevel;
 
 // ! AM2302 (DHT22)
 #define dhtPin 2
-// // #define dhtPower 48
 #define dhtType DHT22
 DHT dht22(dhtPin, dhtType);
 float humidity;
@@ -26,8 +28,32 @@ float heatIndex;
 
 // ! pH SENSOR
 #define phSensorPin A2
-// // #define phSensorPower 46
-float phValue;
+float phLevel;
+
+// ! TDS SENSOR
+#define tdsSensorPin A3
+GravityTDS gravityTds;
+float tdsTemperature = 25;
+float tds = 0;
+
+// ! RELAY
+Relay phUpPump = Relay(24);
+Relay phDownPump = Relay(26);
+Relay nutrientPump = Relay(28);
+Relay waterPumpA = Relay(30);
+Relay waterPumpB = Relay(32);
+Relay fan = Relay(34);
+Relay lights = Relay(36);
+
+// ! LIMITS
+float maxSoilMoisture = 80;
+float minSoilMoisture = 20;
+float maxwaterLevel = 80;
+float minWaterLevel = 20;
+float maxTemperature = 30;
+float maxPh = 9;
+float minPh = 4;
+float minTds = 50;
 
 void setup()
 {
@@ -37,6 +63,11 @@ void setup()
   setPowerPins();
   dht22.begin();
 
+  gravityTds.setPin(tdsSensorPin);
+  gravityTds.setAref(5.0);      // * reference voltage on ADC, default 5.0V on Arduino UNO
+  gravityTds.setAdcRange(1024); // * 1024 for 10bit ADC;4096 for 12bit ADC
+  gravityTds.begin();           // * initialization
+
   delay(2000);
 }
 
@@ -45,19 +76,20 @@ void loop()
   getSoilMoisture();
   getWaterLevel();
   gethumidityAndTemperature();
-  // * getpH();
+  getpH();
+  getTds();
 
   sendData();
+
+  processSoilMoisture();
+  processWaterLevel();
+  processTempAndHumidity();
+  processPh();
+  processTds();
+
   delay(10000);
 
-  if (Serial1.available())
-  {
-    DynamicJsonDocument settings(1024);
-    DeserializationError err = deserializeJson(settings, Serial1);
-
-    if (err == DeserializationError::Ok)
-      Serial.println(settings.as<String>());
-  }
+  parseSettingsData();
 }
 
 void sendData()
@@ -69,9 +101,33 @@ void sendData()
   sensorData["waterLevel"] = waterLevel;
   sensorData["humidity"] = humidity;
   sensorData["temperature"] = temperature;
-  // * sensorData["phValue"] = phValue;
+  sensorData["phLevel"] = phLevel;
+  sensorData["tds"] = tds;
 
   serializeJson(sensorData, NodeMCU);
+}
+
+void parseSettingsData()
+{
+  if (Serial1.available())
+  {
+    DynamicJsonDocument settings(1024);
+    DeserializationError err = deserializeJson(settings, Serial1);
+
+    if (err == DeserializationError::Ok)
+    {
+      Serial.println(settings.as<String>());
+
+      maxSoilMoisture = settings["a"].as<float>();
+      minSoilMoisture = settings["b"].as<float>();
+      maxwaterLevel = settings["c"].as<float>();
+      minWaterLevel = settings["d"].as<float>();
+      maxTemperature = settings["e"].as<float>();
+      maxPh = settings["f"].as<float>();
+      minPh = settings["g"].as<float>();
+      minTds = settings["h"].as<float>();
+    }
+  }
 }
 
 void getSoilMoisture()
@@ -87,7 +143,7 @@ void getSoilMoisture()
     printValueToSerial("sensorVal", sensorVal);
 
   soilMoisture = (sensorVal > sensorDry) ? 0 : (sensorVal < sensorWet) ? 100
-                 : map(sensorVal, sensorDry, sensorWet, 0, 100);
+                                                                       : map(sensorVal, sensorDry, sensorWet, 0, 100);
   digitalWrite(soilMoistureSensorPower, LOW);
 }
 
@@ -147,10 +203,94 @@ void getpH()
   for (int i = 2; i < 8; i++) // * take the average value of 6 center sample
     avgValue += buf[i];
   float phValue = (float)avgValue * 5.0 / 1024 / 6; // * convert the analog into millivolt
-  phValue = 3.5 * phValue;
+  phLevel = 3.5 * phValue;
 
   if (calibration)
-    printValueToSerial("phValue", phValue);
+    printValueToSerial("phLevel", phLevel);
+}
+
+void getTds()
+{
+  gravityTds.setTemperature(tdsTemperature);
+  gravityTds.update();
+  tds = gravityTds.getTdsValue();
+}
+
+void processSoilMoisture()
+{
+  if (soilMoisture < minSoilMoisture)
+  {
+    waterPumpA.on();
+    delay(2000);
+    processSoilMoisture();
+  }
+  else if (soilMoisture >= maxSoilMoisture)
+  {
+    waterPumpA.off();
+  }
+
+  return;
+}
+
+void processWaterLevel()
+{
+  if (waterLevel < minWaterLevel)
+  {
+    waterPumpB.on();
+    delay(2000);
+    processWaterLevel();
+  }
+  else if (waterLevel >= maxwaterLevel)
+  {
+    waterPumpB.off();
+  }
+
+  return;
+}
+
+void processTempAndHumidity()
+{
+  if (temperature > maxTemperature)
+  {
+    fan.on();
+  }
+  else if (temperature < maxTemperature)
+  {
+    fan.off();
+  }
+}
+
+void processPh()
+{
+  if (phLevel > maxPh)
+  {
+    phDownPump.on();
+    delay(2000);
+    phDownPump.off();
+    processPh();
+  }
+  else if (phLevel < minPh)
+  {
+    phUpPump.on();
+    delay(2000);
+    phUpPump.off();
+    processPh();
+  }
+
+  return;
+}
+
+void processTds()
+{
+  if (tds < minTds)
+  {
+    nutrientPump.on();
+    delay(2000);
+    nutrientPump.off();
+    processTds();
+  }
+
+  return;
 }
 
 void setPowerPins()
@@ -164,16 +304,6 @@ void setPowerPins()
   // ? initially off
   pinMode(waterLevelSensorPower, OUTPUT);
   digitalWrite(waterLevelSensorPower, LOW);
-
-  // // // ! AM2302 (DHT22)
-  // // // ? initially on
-  // // pinMode(dhtPower, OUTPUT);
-  // // digitalWrite(dhtPower, HIGH);
-
-  // // // ! pH SENSOR
-  // // // ? initially on
-  // // pinMode(phSensorPower, OUTPUT);
-  // // digitalWrite(phSensorPower, HIGH);
 }
 
 void printValueToSerial(String sensor, long value)
