@@ -18,7 +18,7 @@
 
         public GardenController()
         {
-            this.dataGateway = new ReadingsDataGateway(new CosmosDbClientFactory("AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="));
+            this.dataGateway = new ReadingsDataGateway(new CosmosDbClientFactory("AccountEndpoint=https://9f0463a8-0ee0-4-231-b9ee.documents.azure.com:443/;AccountKey=QR7ZZyPXFXYQo7Qli4taYnWNCO3l2jej15J7CLUhVgrdBeMDrhGQUNxYtgNC7GvynjE8OPeFzEutL9QKHo6eVA=="));
         }
 
         [HttpPost]

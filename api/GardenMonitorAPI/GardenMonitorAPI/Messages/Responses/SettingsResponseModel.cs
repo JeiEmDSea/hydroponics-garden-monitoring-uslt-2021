@@ -5,27 +5,27 @@
     public class SettingsResponseModel
     {
         [JsonProperty("a")]
-        public int MaxSoilMoisture { get; set; }
+        public double MaxSoilMoisture { get; set; }
 
         [JsonProperty("b")]
-        public int MinSoilMoisture { get; set; }
+        public double MinSoilMoisture { get; set; }
 
         [JsonProperty("c")]
-        public int MaxWaterLevel { get; set; }
+        public double MaxWaterLevel { get; set; }
 
         [JsonProperty("d")]
-        public int MinWaterLevel { get; set; }
+        public double MinWaterLevel { get; set; }
 
         [JsonProperty("e")]
-        public int MaxHumidity { get; set; }
+        public double MaxTemperature { get; set; }
 
         [JsonProperty("f")]
-        public int MinHumidity { get; set; }
+        public double MaxPh { get; set; }
 
         [JsonProperty("g")]
-        public int MaxTemperature { get; set; }
+        public double MinPh { get; set; }
 
         [JsonProperty("h")]
-        public int MinTemperature { get; set; }
+        public double MinTds { get; set; }
     }
 }

@@ -5,34 +5,31 @@
 
     public class SettingsWebModel
     {
-        [JsonProperty("id")]
-        public Guid Id { get; set; }
-
         [JsonProperty("gardenId")]
         public string GardenId { get; set; }
 
         [JsonProperty("maxSoilMoisture")]
-        public int MaxSoilMoisture { get; set; }
+        public double MaxSoilMoisture { get; set; }
 
         [JsonProperty("minSoilMoisture")]
-        public int MinSoilMoisture { get; set; }
+        public double MinSoilMoisture { get; set; }
 
         [JsonProperty("maxWaterLevel")]
-        public int MaxWaterLevel { get; set; }
+        public double MaxWaterLevel { get; set; }
 
         [JsonProperty("minWaterLevel")]
-        public int MinWaterLevel { get; set; }
-
-        [JsonProperty("maxHumidity")]
-        public int MaxHumidity { get; set; }
-
-        [JsonProperty("minHumidity")]
-        public int MinHumidity { get; set; }
+        public double MinWaterLevel { get; set; }
 
         [JsonProperty("maxTemperature")]
-        public int MaxTemperature { get; set; }
+        public double MaxTemperature { get; set; }
 
-        [JsonProperty("minTemperature")]
-        public int MinTemperature { get; set; }
+        [JsonProperty("minPh")]
+        public double MinPh { get; set; }
+
+        [JsonProperty("maxPh")]
+        public double MaxPh { get; set; }
+
+        [JsonProperty("minTds")]
+        public double MinTds { get; set; }
     }
 }

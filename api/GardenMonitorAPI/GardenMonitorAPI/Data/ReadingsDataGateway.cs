@@ -121,6 +121,31 @@
         {
             var client = this.clientFactory.GetOrCreateInstance();
 
+            QueryDefinition query = new QueryDefinition(
+                "select * from settings s where s.gardenId = @gardenId ")
+                .WithParameter("@gardenId", settings.GardenId);
+
+            List<SettingsEntity> existingSettings = new();
+            using FeedIterator<SettingsEntity> resultSet = client.GetContainer(DatabaseMap.Id, DatabaseMap.Map[EntityType.Settings]).GetItemQueryIterator<SettingsEntity>(
+                query,
+                requestOptions: new QueryRequestOptions()
+                {
+                    PartitionKey = new PartitionKey(settings.GardenId),
+                    MaxItemCount = 1
+                });
+
+            while (resultSet.HasMoreResults)
+            {
+                FeedResponse<SettingsEntity> response = await resultSet.ReadNextAsync();
+                if (response.Diagnostics != null)
+                    existingSettings.AddRange(response);
+            }
+
+            if (existingSettings.Any())
+            {
+                settings.Id = existingSettings.First().Id;
+            }
+
             await client.GetContainer(DatabaseMap.Id, DatabaseMap.Map[EntityType.Settings]).UpsertItemAsync(settings, new PartitionKey(settings.GardenId.ToString()));
         }
     }

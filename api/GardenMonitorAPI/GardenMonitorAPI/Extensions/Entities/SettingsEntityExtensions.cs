@@ -13,10 +13,10 @@
                 MinSoilMoisture = settings.MinSoilMoisture,
                 MaxWaterLevel = settings.MaxWaterLevel,
                 MinWaterLevel = settings.MinWaterLevel,
-                MaxHumidity = settings.MaxHumidity,
-                MinHumidity = settings.MinHumidity,
                 MaxTemperature = settings.MaxTemperature,
-                MinTemperature = settings.MinTemperature
+                MaxPh = settings.MaxPh,
+                MinPh = settings.MinPh,
+                MinTds = settings.MinTds
             };
         }
     }

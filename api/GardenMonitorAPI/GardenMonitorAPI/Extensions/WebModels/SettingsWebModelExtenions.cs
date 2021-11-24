@@ -9,16 +9,15 @@
         {
             return new SettingsEntity
             {
-                Id = model.Id,
                 GardenId = model.GardenId,
                 MaxSoilMoisture = model.MaxSoilMoisture,
                 MinSoilMoisture = model.MinSoilMoisture,
                 MaxWaterLevel = model.MaxWaterLevel,
                 MinWaterLevel = model.MinWaterLevel,
-                MaxHumidity = model.MaxHumidity,
-                MinHumidity = model.MinHumidity,
                 MaxTemperature = model.MaxTemperature,
-                MinTemperature = model.MinTemperature
+                MinPh = model.MinPh,
+                MaxPh = model.MaxPh,
+                MinTds = model.MinTds
             };
         }
     }
