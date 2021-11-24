@@ -57,6 +57,14 @@
 
             return this.Ok();
         }
+
+        [HttpGet("test")]
+        [AllowAnonymous]
+        public async Task<IActionResult> TestApi()
+        {
+            return this.Ok();
+        }
+
     }
 }
 
