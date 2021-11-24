@@ -57,6 +57,14 @@ float minTds = 50;
 
 void setup()
 {
+  phUpPump.off();
+  phDownPump.off();
+  nutrientPump.off();
+  waterPumpA.off();
+  waterPumpB.off();
+  fan.off();
+  lights.off();
+
   Serial.begin(9600);
   Serial1.begin(9600);
   NodeMCU.begin(9600);
@@ -81,11 +89,11 @@ void loop()
 
   sendData();
 
-  processSoilMoisture();
-  processWaterLevel();
-  processTempAndHumidity();
-  processPh();
-  processTds();
+  // ! processSoilMoisture();
+  // ! processWaterLevel();
+  // ! processTempAndHumidity();
+  // ! processPh();
+  // ! processTds();
 
   delay(10000);
 
@@ -94,7 +102,7 @@ void loop()
 
 void sendData()
 {
-  StaticJsonDocument<300> sensorData;
+  StaticJsonDocument<500> sensorData;
 
   sensorData["gardenId"] = "plantronics1";
   sensorData["soilMoisture"] = soilMoisture;
@@ -104,14 +112,16 @@ void sendData()
   sensorData["phLevel"] = phLevel;
   sensorData["tds"] = tds;
 
-  serializeJson(sensorData, NodeMCU);
+  // * Serial.println(sensorData.as<String>());
+  // * serializeJson(sensorData, NodeMCU);
+  NodeMCU.print(sensorData.as<String>());
 }
 
 void parseSettingsData()
 {
   if (Serial1.available())
   {
-    DynamicJsonDocument settings(1024);
+    StaticJsonDocument<600> settings;
     DeserializationError err = deserializeJson(settings, Serial1);
 
     if (err == DeserializationError::Ok)

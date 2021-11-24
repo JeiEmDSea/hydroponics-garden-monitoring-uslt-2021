@@ -2,11 +2,11 @@
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
 
-#define BASE_URL "http://cb14-58-69-124-94.ngrok.io"
+#define BASE_URL "http://4ecc-110-54-145-133.ngrok.io"
 
 #ifndef STASSID
-#define STASSID "TP-Link_1EFA"
-#define STAPSK "24677721"
+#define STASSID "johnmark"
+#define STAPSK "jmhotspot"
 #endif
 
 void setup()
@@ -14,10 +14,13 @@ void setup()
   Serial.begin(9600);
   WiFi.begin(STASSID, STAPSK);
 
-  while (WiFi.status() != WL_CONNECTED)
-  {
+  while (WiFi.status() != WL_CONNECTED) {
     delay(500);
+    Serial.print(".");
   }
+  Serial.println("");
+  Serial.print("Connected! IP address: ");
+  Serial.println(WiFi.localIP());
 }
 
 void loop()
@@ -32,11 +35,14 @@ void parseData()
 {
   if (Serial.available())
   {
-    StaticJsonDocument<500> sensorData;
+    StaticJsonDocument<600> sensorData;
     DeserializationError err = deserializeJson(sensorData, Serial);
 
     if (err == DeserializationError::Ok)
+    {      
       saveReading(sensorData.as<String>());
+      // * Serial.println(sensorData.as<String>());
+    }
   }
 }
 
