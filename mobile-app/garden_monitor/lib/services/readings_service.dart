@@ -4,7 +4,7 @@ import 'package:garden_monitor/models/readings.dart';
 import 'package:http/http.dart' as http;
 
 class ReadingsService {
-  static const baseUrl = 'https://ffcf-58-69-124-94.ngrok.io';
+  static const baseUrl = 'http://4ecc-110-54-145-133.ngrok.io';
 
   Future<Readings> getReadings(String gardenId) async {
     var url = Uri.parse(baseUrl + '/garden?gardenId=' + gardenId);

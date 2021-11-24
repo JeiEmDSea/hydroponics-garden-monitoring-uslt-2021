@@ -94,50 +94,7 @@ class SettingScreen extends StatelessWidget {
             Container(height: kDefaultPadding),
             TextField(
               decoration: InputDecoration(
-                hintText: 'Max humidity',
-                hintStyle: TextStyle(color: Colors.green.withOpacity(0.5)),
-                enabledBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green)),
-                focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green)),
-              ),
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly
-              ], // On
-            ),
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Min humidity',
-                hintStyle: TextStyle(color: Colors.green.withOpacity(0.5)),
-                enabledBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green)),
-                focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green)),
-              ),
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly
-              ], // On
-            ),
-            Container(height: kDefaultPadding),
-            TextField(
-              decoration: InputDecoration(
                 hintText: 'Max temperature',
-                hintStyle: TextStyle(color: Colors.red.withOpacity(0.5)),
-                enabledBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red)),
-                focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red)),
-              ),
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly
-              ], // On
-            ),
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Min temperature',
                 hintStyle: TextStyle(color: Colors.red.withOpacity(0.5)),
                 enabledBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.red)),
@@ -172,21 +129,6 @@ class SettingScreen extends StatelessWidget {
                     borderSide: BorderSide(color: Colors.pink)),
                 focusedBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.pink)),
-              ),
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly
-              ], // On
-            ),
-            Container(height: kDefaultPadding),
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Max TDS',
-                hintStyle: TextStyle(color: Colors.purple.withOpacity(0.5)),
-                enabledBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.purple)),
-                focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.purple)),
               ),
               keyboardType: TextInputType.number,
               inputFormatters: <TextInputFormatter>[
