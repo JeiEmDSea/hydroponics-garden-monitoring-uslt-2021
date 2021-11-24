@@ -2,7 +2,7 @@
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
 
-#define BASE_URL "http://4ecc-110-54-145-133.ngrok.io"
+#define BASE_URL "http://plantronics-api.azurewebsites.net"
 
 #ifndef STASSID
 #define STASSID "johnmark"
