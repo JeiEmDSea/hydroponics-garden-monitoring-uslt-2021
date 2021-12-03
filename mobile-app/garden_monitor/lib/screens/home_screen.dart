@@ -3,8 +3,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:garden_monitor/components/body.dart';
 import 'package:garden_monitor/constants.dart';
 import 'package:garden_monitor/models/readings.dart';
+import 'package:garden_monitor/models/settings.dart';
 import 'package:garden_monitor/screens/settings_screen.dart';
 import 'package:garden_monitor/services/readings_service.dart';
+import 'package:garden_monitor/services/settings_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -14,21 +16,27 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final readingsService = ReadingsService();
+  static const String baseUrl = 'https://plantronics-api.azurewebsites.net';
+
+  final readingsService = ReadingsService(baseUrl);
+  final settingsService = SettingsService(baseUrl);
 
   Readings readings = Readings(
-      soliMoisture: [1, 3, 4, 5, 2, 7],
-      waterLevel: [1, 3, 4, 5, 2, 7],
-      humidity: [1, 3, 4, 5, 2, 7],
-      temperature: [1, 3, 4, 5, 2, 7],
-      phLevel: [1, 3, 4, 5, 2, 7],
-      tds: [1, 3, 4, 5, 2, 7]);
+      soliMoisture: [],
+      waterLevel: [],
+      humidity: [],
+      temperature: [],
+      phLevel: [],
+      tds: []);
+
+  late Settings settings;
 
   bool isLoading = false;
 
   @override
   void initState() {
     getReadings();
+    getSettings();
     super.initState();
   }
 
@@ -45,6 +53,14 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  getSettings() async {
+    var result = await settingsService.getSettings('plantronics1');
+
+    setState(() {
+      settings = result;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,9 +72,17 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             FloatingActionButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const SettingScreen()));
+              onPressed: () async {
+                final Settings result = await Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (_) => SettingScreen(settings: settings)));
+
+                var saveSettingsResult =
+                    await settingsService.saveSettings(result);
+
+                setState(() {
+                  settings = saveSettingsResult;
+                });
               },
               child: const Icon(
                 Icons.settings,
@@ -80,6 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Body(
         readings: readings,
         isLoading: isLoading,
+        gardenId: settings.gardenId,
       ),
     );
   }

@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:garden_monitor/components/header.dart';
 import 'package:garden_monitor/constants.dart';
+import 'package:garden_monitor/enums/parameter_enum.dart';
 import 'package:garden_monitor/models/readings.dart';
 import 'package:garden_monitor/widgets/info_card.dart';
 
 class Body extends StatelessWidget {
   final Readings readings;
   final bool isLoading;
+  final String gardenId;
 
   const Body({
     Key? key,
     required this.readings,
     required this.isLoading,
+    required this.gardenId,
   }) : super(key: key);
 
   @override
@@ -50,6 +53,8 @@ class Body extends StatelessWidget {
                         icon: Icons.local_florist,
                         iconColor: Colors.orange,
                         readingValues: readings.soliMoisture,
+                        parameter: Parameter.SoilMoisture,
+                        gardenId: gardenId,
                       ),
                       InfoCard(
                         title: 'Water Level',
@@ -58,6 +63,8 @@ class Body extends StatelessWidget {
                         icon: Icons.invert_colors,
                         iconColor: Colors.blue,
                         readingValues: readings.waterLevel,
+                        parameter: Parameter.WaterLevel,
+                        gardenId: gardenId,
                       ),
                       InfoCard(
                         title: 'Humidity',
@@ -66,6 +73,8 @@ class Body extends StatelessWidget {
                         icon: Icons.ac_unit,
                         iconColor: Colors.green,
                         readingValues: readings.humidity,
+                        parameter: Parameter.Humidity,
+                        gardenId: gardenId,
                       ),
                       InfoCard(
                         title: 'Temperature',
@@ -74,6 +83,8 @@ class Body extends StatelessWidget {
                         icon: Icons.thermostat,
                         iconColor: Colors.red,
                         readingValues: readings.temperature,
+                        parameter: Parameter.Temperature,
+                        gardenId: gardenId,
                       ),
                       InfoCard(
                         title: 'pH Level',
@@ -82,6 +93,8 @@ class Body extends StatelessWidget {
                         icon: Icons.sanitizer,
                         iconColor: Colors.pink,
                         readingValues: readings.phLevel,
+                        parameter: Parameter.PhLevel,
+                        gardenId: gardenId,
                       ),
                       InfoCard(
                         title: 'TDS',
@@ -90,6 +103,8 @@ class Body extends StatelessWidget {
                         icon: Icons.addchart,
                         iconColor: Colors.purple,
                         readingValues: readings.tds,
+                        parameter: Parameter.Tds,
+                        gardenId: gardenId,
                       ),
                     ],
                   ),
