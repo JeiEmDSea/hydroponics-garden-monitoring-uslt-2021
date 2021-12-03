@@ -70,6 +70,15 @@
             return this.Ok();
         }
 
+        [HttpGet("settings")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetSettings([FromQuery] string gardenId)
+        {
+            var response = await this.dataGateway.GetSettings(gardenId);
+
+            return this.Ok(response);
+        }
+
         [HttpGet("test")]
         [AllowAnonymous]
         public async Task<IActionResult> TestApi()
