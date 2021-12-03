@@ -3,6 +3,7 @@
     using System.Threading.Tasks;
     using GardenMonitorAPI.Data;
     using GardenMonitorAPI.Data.Factories;
+    using GardenMonitorAPI.Enums;
     using GardenMonitorAPI.Extensions.Entities;
     using GardenMonitorAPI.Extensions.WebModels;
     using GardenMonitorAPI.WebModels;
@@ -34,7 +35,18 @@
         [AllowAnonymous]
         public async Task<IActionResult> GetReadings([FromQuery] string gardenId)
         {
-            var response = (await this.dataGateway.GetReadings(gardenId)).AsResponse();
+            var pageSize = 12;
+            var response = (await this.dataGateway.GetReadings(gardenId, pageSize)).AsResponse();
+
+            return this.Ok(JsonConvert.SerializeObject(response));
+        }
+
+        [HttpGet("readings")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetReadingsByParameter([FromQuery] string gardenId, Parameter parameter)
+        {
+            var pageSize = 30;
+            var response = (await this.dataGateway.GetReadings(gardenId, pageSize)).AsResponse(parameter);
 
             return this.Ok(JsonConvert.SerializeObject(response));
         }
