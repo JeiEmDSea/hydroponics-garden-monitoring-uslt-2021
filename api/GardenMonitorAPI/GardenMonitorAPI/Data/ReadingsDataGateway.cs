@@ -50,7 +50,7 @@
             var client = this.clientFactory.GetOrCreateInstance();
 
             QueryDefinition query = new QueryDefinition(
-                "select TOP @pageSize * from readings r where r.gardenId = @gardenId order by r.timeStamp asc")
+                "select TOP @pageSize * from readings r where r.gardenId = @gardenId order by r.timeStamp desc")
                 .WithParameter("@gardenId", gardenId)
                 .WithParameter("@pageSize", pageSize);
 
