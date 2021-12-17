@@ -38,6 +38,7 @@ class SettingScreen extends StatelessWidget {
                     borderSide: BorderSide(color: kPrimaryColor)),
                 focusedBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: kPrimaryColor)),
+                labelText: 'Garden id',
               ),
               onChanged: (value) {
                 settings.gardenId = value;
@@ -54,6 +55,7 @@ class SettingScreen extends StatelessWidget {
                     borderSide: BorderSide(color: Colors.orange)),
                 focusedBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.orange)),
+                labelText: 'Max soil moisture',
               ),
               keyboardType: TextInputType.number,
               onChanged: (value) {
@@ -70,6 +72,7 @@ class SettingScreen extends StatelessWidget {
                     borderSide: BorderSide(color: Colors.orange)),
                 focusedBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.orange)),
+                labelText: 'Min soil moisture',
               ),
               keyboardType: TextInputType.number,
               onChanged: (value) {
@@ -87,6 +90,7 @@ class SettingScreen extends StatelessWidget {
                     borderSide: BorderSide(color: Colors.blue)),
                 focusedBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.blue)),
+                labelText: 'Max water level',
               ),
               keyboardType: TextInputType.number,
               onChanged: (value) {
@@ -103,6 +107,7 @@ class SettingScreen extends StatelessWidget {
                     borderSide: BorderSide(color: Colors.blue)),
                 focusedBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.blue)),
+                labelText: 'Min water level',
               ),
               keyboardType: TextInputType.number,
               onChanged: (value) {
@@ -120,6 +125,7 @@ class SettingScreen extends StatelessWidget {
                     borderSide: BorderSide(color: Colors.red)),
                 focusedBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.red)),
+                labelText: 'Max temperature',
               ),
               keyboardType: TextInputType.number,
               onChanged: (value) {
@@ -137,6 +143,7 @@ class SettingScreen extends StatelessWidget {
                     borderSide: BorderSide(color: Colors.pink)),
                 focusedBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.pink)),
+                labelText: 'Max pH',
               ),
               keyboardType: TextInputType.number,
               onChanged: (value) {
@@ -147,29 +154,30 @@ class SettingScreen extends StatelessWidget {
               controller:
                   TextEditingController(text: settings.minPh.toString()),
               decoration: InputDecoration(
-                hintText: 'Min pH',
-                hintStyle: TextStyle(color: Colors.pink.withOpacity(0.5)),
-                enabledBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.pink)),
-                focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.pink)),
-              ),
+                  hintText: 'Min pH',
+                  hintStyle: TextStyle(color: Colors.pink.withOpacity(0.5)),
+                  enabledBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.pink)),
+                  focusedBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.pink)),
+                  labelText: 'Min pH'),
               keyboardType: TextInputType.number,
               onChanged: (value) {
                 settings.minPh = double.parse(value);
               },
             ),
+            Container(height: kDefaultPadding),
             TextField(
               controller:
                   TextEditingController(text: settings.minTds.toString()),
               decoration: InputDecoration(
-                hintText: 'Min TDS',
-                hintStyle: TextStyle(color: Colors.purple.withOpacity(0.5)),
-                enabledBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.purple)),
-                focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.purple)),
-              ),
+                  hintText: 'Min TDS',
+                  hintStyle: TextStyle(color: Colors.purple.withOpacity(0.5)),
+                  enabledBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.purple)),
+                  focusedBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.purple)),
+                  labelText: 'Min TDS'),
               keyboardType: TextInputType.number,
               onChanged: (value) {
                 settings.minTds = double.parse(value);

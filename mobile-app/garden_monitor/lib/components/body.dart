@@ -40,15 +40,17 @@ class Body extends StatelessWidget {
                     horizontal: kDefaultPadding,
                     vertical: kDefaultPadding,
                   ),
-                  height: 300,
+                  height: 500,
                   width: double.infinity,
                   child: Wrap(
                     runSpacing: 20,
                     spacing: 20,
+                    clipBehavior: Clip.none,
+                    verticalDirection: VerticalDirection.down,
                     children: <Widget>[
                       InfoCard(
                         title: 'Soil Moisture',
-                        value: readings.soliMoisture.last,
+                        value: readings.soliMoisture.reversed.last,
                         unit: '%',
                         icon: Icons.local_florist,
                         iconColor: Colors.orange,
@@ -58,7 +60,7 @@ class Body extends StatelessWidget {
                       ),
                       InfoCard(
                         title: 'Water Level',
-                        value: readings.waterLevel.last,
+                        value: readings.waterLevel.reversed.last,
                         unit: '%',
                         icon: Icons.invert_colors,
                         iconColor: Colors.blue,
@@ -68,7 +70,7 @@ class Body extends StatelessWidget {
                       ),
                       InfoCard(
                         title: 'Humidity',
-                        value: readings.humidity.last,
+                        value: readings.humidity.reversed.last,
                         unit: '%',
                         icon: Icons.ac_unit,
                         iconColor: Colors.green,
@@ -78,7 +80,7 @@ class Body extends StatelessWidget {
                       ),
                       InfoCard(
                         title: 'Temperature',
-                        value: readings.temperature.last,
+                        value: readings.temperature.reversed.last,
                         unit: '°C',
                         icon: Icons.thermostat,
                         iconColor: Colors.red,
@@ -88,7 +90,7 @@ class Body extends StatelessWidget {
                       ),
                       InfoCard(
                         title: 'pH Level',
-                        value: readings.phLevel.last,
+                        value: readings.phLevel.reversed.last,
                         unit: 'pH',
                         icon: Icons.sanitizer,
                         iconColor: Colors.pink,
@@ -98,7 +100,7 @@ class Body extends StatelessWidget {
                       ),
                       InfoCard(
                         title: 'TDS',
-                        value: readings.tds.last,
+                        value: readings.tds.reversed.last,
                         unit: 'PPM',
                         icon: Icons.addchart,
                         iconColor: Colors.purple,

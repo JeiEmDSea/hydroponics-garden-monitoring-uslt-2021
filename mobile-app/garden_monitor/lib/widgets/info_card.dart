@@ -100,7 +100,7 @@ class InfoCard extends StatelessWidget {
                             style: const TextStyle(color: kTextColor),
                             children: [
                               TextSpan(
-                                text: '$value \n',
+                                text: '${value.toStringAsFixed(1)} \n',
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline5!
@@ -123,7 +123,7 @@ class InfoCard extends StatelessWidget {
                       ),
                       Expanded(
                         child: LineReportChart(
-                          readingValues: readingValues,
+                          readingValues: readingValues.reversed.toList(),
                         ),
                       )
                     ],

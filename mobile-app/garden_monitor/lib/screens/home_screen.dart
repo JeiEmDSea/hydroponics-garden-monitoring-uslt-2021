@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
       phLevel: [],
       tds: []);
 
-  late Settings settings;
+  Settings settings = Settings();
 
   bool isLoading = false;
 
