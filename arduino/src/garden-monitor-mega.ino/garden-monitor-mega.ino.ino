@@ -128,14 +128,14 @@ void parseSettingsData()
     {
       Serial.println(settings.as<String>());
 
-      maxSoilMoisture = settings["a"].as<float>();
-      minSoilMoisture = settings["b"].as<float>();
-      maxwaterLevel = settings["c"].as<float>();
-      minWaterLevel = settings["d"].as<float>();
-      maxTemperature = settings["e"].as<float>();
-      maxPh = settings["f"].as<float>();
-      minPh = settings["g"].as<float>();
-      minTds = settings["h"].as<float>();
+      maxSoilMoisture = settings["a"].as<String>().toFloat();
+      minSoilMoisture = settings["b"].as<String>().toFloat();
+      maxwaterLevel = settings["c"].as<String>().toFloat();
+      minWaterLevel = settings["d"].as<String>().toFloat();
+      maxTemperature = settings["e"].as<String>().toFloat();
+      maxPh = settings["f"].as<String>().toFloat();
+      minPh = settings["g"].as<String>().toFloat();
+      minTds = settings["h"].as<String>().toFloat();
     }
   }
 }
