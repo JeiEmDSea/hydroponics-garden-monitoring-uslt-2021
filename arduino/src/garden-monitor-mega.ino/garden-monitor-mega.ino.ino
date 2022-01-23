@@ -5,7 +5,6 @@
 #include "GravityTDS.h"
 #include <Relay.h>
 
-#define calibration false
 SoftwareSerial NodeMCU(3, 4);
 
 // ! SOIL MOISTURE SENSOR
@@ -55,6 +54,8 @@ float maxPh = 9;
 float minPh = 4;
 float minTds = 50;
 
+int processCounter = 0;
+
 void setup()
 {
   phUpPump.off();
@@ -88,16 +89,14 @@ void loop()
   getTds();
 
   sendData();
+  delay(10000);
+  parseSettingsData();
 
   // ! processSoilMoisture();
   // ! processWaterLevel();
   // ! processTempAndHumidity();
   // ! processPh();
   // ! processTds();
-
-  delay(10000);
-
-  parseSettingsData();
 }
 
 void sendData()
@@ -112,7 +111,7 @@ void sendData()
   sensorData["phLevel"] = phLevel;
   sensorData["tds"] = tds;
 
-  // * Serial.println(sensorData.as<String>());
+  Serial.println(sensorData.as<String>());
   // * serializeJson(sensorData, NodeMCU);
   NodeMCU.print(sensorData.as<String>());
 }
@@ -140,7 +139,7 @@ void parseSettingsData()
   }
 }
 
-void getSoilMoisture()
+int getSoilMoisture()
 {
   digitalWrite(soilMoistureSensorPower, HIGH);
   delay(20);
@@ -149,15 +148,14 @@ void getSoilMoisture()
   long sensorWet = 335; // ? wet soil
   long sensorDry = 999; // ? dry soil
 
-  if (calibration)
-    printValueToSerial("sensorVal", sensorVal);
-
   soilMoisture = (sensorVal > sensorDry) ? 0 : (sensorVal < sensorWet) ? 100
                                                                        : map(sensorVal, sensorDry, sensorWet, 0, 100);
   digitalWrite(soilMoistureSensorPower, LOW);
+
+  return soilMoisture;
 }
 
-void getWaterLevel()
+int getWaterLevel()
 {
   digitalWrite(waterLevelSensorPower, HIGH);
   delay(20);
@@ -166,11 +164,10 @@ void getWaterLevel()
   long sensorHigh = 95; // ? fully submerged
   long sensorLow = 32;  // ? partially submerged (reads zero when no water is touched)
 
-  if (calibration)
-    printValueToSerial("waterLevel", sensorVal);
-
   waterLevel = (sensorVal == 0) ? 0 : map(sensorVal, sensorLow, sensorHigh, 0, 100);
   digitalWrite(waterLevelSensorPower, LOW);
+
+  return waterLevel;
 }
 
 void gethumidityAndTemperature()
@@ -178,15 +175,9 @@ void gethumidityAndTemperature()
   humidity = dht22.readHumidity();
   temperature = dht22.readTemperature();
   heatIndex = dht22.computeHeatIndex();
-
-  if (calibration)
-  {
-    printValueToSerial("humidity", humidity);
-    printValueToSerial("temperature", temperature);
-  }
 }
 
-void getpH()
+float getpH()
 {
   unsigned long int avgValue = 0;
   int buf[10], temp;
@@ -215,28 +206,30 @@ void getpH()
   float phValue = (float)avgValue * 5.0 / 1024 / 6; // * convert the analog into millivolt
   phLevel = 3.5 * phValue;
 
-  if (calibration)
-    printValueToSerial("phLevel", phLevel);
+  return phLevel;
 }
 
-void getTds()
+float getTds()
 {
   gravityTds.setTemperature(tdsTemperature);
   gravityTds.update();
   tds = gravityTds.getTdsValue();
+  return tds;
 }
 
 void processSoilMoisture()
 {
-  if (soilMoisture < minSoilMoisture)
+  if (getSoilMoisture() < minSoilMoisture)
   {
-    waterPumpA.on();
-    delay(2000);
-    processSoilMoisture();
-  }
-  else if (soilMoisture >= maxSoilMoisture)
-  {
+    while (getSoilMoisture() < maxSoilMoisture && processCounter <= 5)
+    {
+      waterPumpA.on();
+      delay(2000);
+      processCounter++;
+    }
+
     waterPumpA.off();
+    processCounter = 0;
   }
 
   return;
@@ -244,15 +237,17 @@ void processSoilMoisture()
 
 void processWaterLevel()
 {
-  if (waterLevel < minWaterLevel)
+  if (getWaterLevel() < minWaterLevel)
   {
-    waterPumpB.on();
-    delay(2000);
-    processWaterLevel();
-  }
-  else if (waterLevel >= maxwaterLevel)
-  {
+    while (getWaterLevel() < maxwaterLevel && processCounter <= 5)
+    {
+      waterPumpB.on();
+      delay(2000);
+      processCounter++;
+    }
+
     waterPumpB.off();
+    processCounter = 0;
   }
 
   return;
@@ -272,19 +267,29 @@ void processTempAndHumidity()
 
 void processPh()
 {
-  if (phLevel > maxPh)
+  if (getpH() > maxPh)
   {
-    phDownPump.on();
-    delay(2000);
+    while ((getpH() > (minPh + ((maxPh - minPh) / 2))) && processCounter <= 5)
+    {
+      phDownPump.on();
+      delay(2000);
+      processCounter++;
+    }
+
     phDownPump.off();
-    processPh();
+    processCounter = 0;
   }
-  else if (phLevel < minPh)
+  else if (getpH() < minPh)
   {
-    phUpPump.on();
-    delay(2000);
+    while ((getpH() > (maxPh - ((maxPh - minPh) / 2))) && processCounter <= 5)
+    {
+      phUpPump.on();
+      delay(2000);
+      processCounter++;
+    }
+
     phUpPump.off();
-    processPh();
+    processCounter = 0;
   }
 
   return;
@@ -292,12 +297,11 @@ void processPh()
 
 void processTds()
 {
-  if (tds < minTds)
+  if (getTds() < minTds)
   {
     nutrientPump.on();
     delay(2000);
     nutrientPump.off();
-    processTds();
   }
 
   return;
@@ -314,11 +318,4 @@ void setPowerPins()
   // ? initially off
   pinMode(waterLevelSensorPower, OUTPUT);
   digitalWrite(waterLevelSensorPower, LOW);
-}
-
-void printValueToSerial(String sensor, long value)
-{
-  Serial.print(sensor);
-  Serial.print(" = ");
-  Serial.println(value);
 }
