@@ -55,3 +55,10 @@
 11. Wait for some time until the Serial Monitor displays **"Connected! IP address: "**. Reopen the serial monitor if it takes more than 5 mins connecting to the network.
 
 12. Keep the serial monitor open and proceed to the next steps.
+
+<br>
+<p align="center">
+  <a href="https://github.com/JeiEmDSea/Hydroponics-Garden-Monitoring/blob/master/api/GardenMonitorAPI/documentation/run-API.md">Prev</a>
+  <span>•</span>
+  <a href="https://github.com/JeiEmDSea/Hydroponics-Garden-Monitoring/blob/master/arduino/documentation/run-Arduino.md">Next</a>
+</p>
