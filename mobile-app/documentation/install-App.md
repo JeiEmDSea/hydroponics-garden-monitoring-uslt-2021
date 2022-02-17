@@ -47,3 +47,10 @@
 <p align="center">
   <img src="images\stop-debugging.png">
 </p>
+
+<br>
+<p align="center">
+  <a href="https://github.com/JeiEmDSea/Hydroponics-Garden-Monitoring/blob/master/arduino/documentation/run-Arduino.md">Prev</a>
+  <span>•</span>
+  <a href="https://github.com/JeiEmDSea/Hydroponics-Garden-Monitoring">Home</a>
+</p>
