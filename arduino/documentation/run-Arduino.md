@@ -35,3 +35,10 @@
 7. Wait for some time until the Serial Monitor displays data.
 
 8. Keep the serial monitor open and slide the switch to the right to link the Arduino to the NodeMCU. Wait for a few seconds and the NodeMCU's Serial Monitor should be also displaying some data. If that doesn't happen, keep the switch linked and restart the Arduino code by reopening it's Serial Monitor. Everything is running well if both Serial Monitor is displaying data.
+
+<br>
+<p align="center">
+  <a href="https://github.com/JeiEmDSea/Hydroponics-Garden-Monitoring/blob/master/arduino/documentation/run-nodeMCU.md">Prev</a>
+  <span>•</span>
+  <a href="https://github.com/JeiEmDSea/Hydroponics-Garden-Monitoring/blob/master/mobile-app/documentation/install-App.md">Next</a>
+</p>
