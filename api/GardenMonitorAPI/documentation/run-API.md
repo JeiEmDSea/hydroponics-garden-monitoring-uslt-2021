@@ -48,3 +48,10 @@ ngrok http https://localhost:5001
 </p>
 
 9. Everything should be setup at this point. Do not close any console window.
+
+<br>
+<p align="center">
+  <a href="https://github.com/JeiEmDSea/Hydroponics-Garden-Monitoring/blob/master/api/GardenMonitorAPI/documentation/run-Database.md">Prev</a>
+  <span>•</span>
+  <a href="https://github.com/JeiEmDSea/Hydroponics-Garden-Monitoring/blob/master/arduino/documentation/run-nodeMCU.md">Next</a>
+</p>
