@@ -25,3 +25,10 @@
 </p>
 
 5. Everything should be ready at this point. Close the browser tab.
+
+<br>
+<p align="center">
+  <a href="https://github.com/JeiEmDSea/Hydroponics-Garden-Monitoring">Home</a>
+  <span>•</span>
+  <a href="https://github.com/JeiEmDSea/Hydroponics-Garden-Monitoring/blob/master/api/GardenMonitorAPI/documentation/run-API.md">Next</a>
+</p>
